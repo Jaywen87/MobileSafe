@@ -32,10 +32,10 @@ public class SettingActivity extends AppCompatActivity {
         //使用自定义组合空间
         siv_update = (SettingItemView)findViewById(R.id.siv_update);
         if(update) {
-            siv_update.setDescText("自动下载更新已开启");
+            //siv_update.setDescText("自动下载更新已开启");
             siv_update.setChecked(true);
         } else {
-            siv_update.setDescText("自动下载更新已关闭");
+            //siv_update.setDescText("自动下载更新已关闭");
             siv_update.setChecked(false);
         }
         siv_update.setOnClickListener(new View.OnClickListener() {
@@ -44,12 +44,12 @@ public class SettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor edit = sp.edit();
                 if(siv_update.isChecked()) {
                     Log.i(TAG, "onClick: " + siv_update.isChecked());
-                    siv_update.setDescText("自动下载更新已关闭");
+                    //siv_update.setDescText("自动下载更新已关闭");
                     siv_update.setChecked(false);
                     edit.putBoolean("update",false);
                 } else {
                     Log.i(TAG, "onClick: " + siv_update.isChecked());
-                    siv_update.setDescText("自动下载更新已开启");
+                    //siv_update.setDescText("自动下载更新已开启");
                     siv_update.setChecked(true);
                     edit.putBoolean("update",true);
                 }
@@ -87,17 +87,4 @@ public class SettingActivity extends AppCompatActivity {
 //        });
     }
 
-//    public void onClick() {
-//        SharedPreferences.Editor edit = sp.edit();
-//        if(siv_update.isChecked()) {
-//            Log.i(TAG, "onClick: " + siv_update.isChecked());
-//            siv_update.setDescText("自动下载更新已开启");
-//            edit.putBoolean("update",true);
-//        } else {
-//            Log.i(TAG, "onClick: " + siv_update.isChecked());
-//            siv_update.setDescText("自动下载更新已关闭");
-//            edit.putBoolean("update",false);
-//        }
-//        edit.commit();
-//    }
 }

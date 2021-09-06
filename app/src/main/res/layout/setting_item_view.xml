@@ -10,8 +10,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/tv_title"
             android:textColor="#000000"
-            android:textSize="22sp"
-            android:text="设置是否自动更新"/>
+            android:textSize="22sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -20,8 +19,7 @@
             android:layout_marginStart="5dp"
             android:id="@+id/tv_desc"
             android:textColor="#88000000"
-            android:textSize="16sp"
-            android:text="描述"/>
+            android:textSize="16sp" />
 
 <!--        这个是自定义空间，所以需要点击这个整个自定义控件，选择取消，所以不能是CheckBox的到焦点，也不能点击，所以需要
             android:clickable="false" 这样代表checkBox
