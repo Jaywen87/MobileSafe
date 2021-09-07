@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.wenjie.mobilesafe.ui.SettingItemView;
 
-public class Setup2Activity extends AppCompatActivity {
+public class Setup2Activity extends BaseSetupActivity {
 
     private SharedPreferences sp;
     private SettingItemView siv_bind;
@@ -43,17 +43,20 @@ public class Setup2Activity extends AppCompatActivity {
 
     }
 
-    public void pre(View v) {
+    @Override
+    public void showNext() {
+        Intent intent = new Intent(Setup2Activity.this, Setup3Activity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.tran_in,R.anim.tran_out);
+    }
+
+    @Override
+    public void showPre() {
         Intent intent = new Intent(Setup2Activity.this, Setup1Activity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.tran_in_pre,R.anim.tran_out_pre);
     }
 
-    public void next(View v) {
-        Intent intent = new Intent(Setup2Activity.this, Setup3Activity.class);
-        startActivity(intent);
-        finish();
-        overridePendingTransition(R.anim.tran_in,R.anim.tran_out);
-    }
 }
