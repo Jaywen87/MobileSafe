@@ -1,5 +1,6 @@
 package com.wenjie.mobilesafe;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -10,10 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 public abstract class BaseSetupActivity extends AppCompatActivity {
     //1.定义一个手势识别器
     private GestureDetector gestureDetector;
+    protected SharedPreferences sp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sp = getSharedPreferences("config", MODE_PRIVATE);
 
         //2.实例化一个手势识别器
         gestureDetector = new GestureDetector(this,new GestureDetector.SimpleOnGestureListener() {

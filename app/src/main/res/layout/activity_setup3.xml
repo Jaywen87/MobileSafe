@@ -24,11 +24,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/et_contact"
         android:inputType="phone"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/btn_select"
         android:background="@drawable/button_bg"
         android:text="选择联系人"/>
 
