@@ -28,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -64,6 +66,8 @@ public class SplashActivity extends AppCompatActivity {
         alphaAnimation.setDuration(1000);
         findViewById(R.id.cl_splash_view).startAnimation(alphaAnimation);
 
+        // 拷贝数据
+        copyDB();
         if(sp.getBoolean("update",false))
         {
             checkUpdate();
@@ -115,6 +119,31 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
         };
+
+    }
+
+    /**
+     * path 把address.db这个数据库拷贝到data/data/《包名》/files/address.db
+     */
+    private void copyDB() {
+        try {
+            File file = new File(getFilesDir(),"address.db");
+            if (file.exists() && file.length() > 0) {
+                Log.i(TAG, "copyDB: 文件已存在，不需要拷贝");
+            } else {
+                InputStream is  = getAssets().open("address.db");
+                FileOutputStream fos = new FileOutputStream(file);
+                byte [] buffer  = new  byte[1024];
+                int len = 0;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer,0,len);
+                }
+                is.close();
+                fos.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

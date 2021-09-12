@@ -54,12 +54,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 8:
-                        Intent intent = new Intent(MainActivity.this,SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 0:
+                    case 0://进入防盗追踪
                         showLostFindDialog();
+                        break;
+                    case 7://进入高级工具
+                        Intent intent7 = new Intent(MainActivity.this,AtoolsActivity.class);
+                        startActivity(intent7);
+                        break;
+                    case 8://进入设置中心
+                        Intent intent8 = new Intent(MainActivity.this,SettingActivity.class);
+                        startActivity(intent8);
                         break;
                     default:
                         break;
