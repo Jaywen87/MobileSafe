@@ -17,10 +17,23 @@
 
     <com.wenjie.mobilesafe.ui.SettingItemView
         android:layout_width="match_parent"
-        android:layout_height="68dip"
+        android:layout_height="wrap_content"
         android:id="@+id/siv_update"
         wenjie:title="设置是否自动更新"
         wenjie:disc_on="设置自动更新已经开启"
         wenjie:disc_off="设置自动更新已经关闭" />
+
+    <com.wenjie.mobilesafe.ui.SettingItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/siv_show_address"
+        wenjie:title="号码归属地显示"
+        wenjie:disc_on="号码归属地显示已经开启"
+        wenjie:disc_off="号码归属地显示已经关闭" />
+
+    <com.wenjie.mobilesafe.ui.SettingClickView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scv_changeBg"/>
 
 </LinearLayout>

@@ -9,10 +9,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 
     <application
         android:allowBackup="true"
@@ -22,7 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".NumberAddressQueryActivity"/>
+        <service
+            android:name=".service.AddressService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".NumberAddressQueryActivity" />
         <activity android:name=".AtoolsActivity" />
         <activity android:name=".Setup4Activity" />
         <activity android:name=".Setup3Activity" />
@@ -55,7 +62,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receiver.BootCompleteReceiver"
             android:enabled="true"

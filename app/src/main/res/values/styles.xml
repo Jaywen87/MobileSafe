@@ -43,7 +43,7 @@
         <item name="android:background">@drawable/button_select</item>
     </style>
 
-    <style name="button_pre_style">android:background=""
+    <style name="button_pre_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentStart">true</item>
