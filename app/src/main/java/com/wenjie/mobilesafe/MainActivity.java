@@ -26,7 +26,7 @@ import static android.view.View.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String [] names = {"手机防盗","通讯卫士","软件管理",
+    private static String [] names = {"手机防盗","通讯卫士","应用管理",
                                       "进程管理","流量统计","手机杀毒",
                                       "缓存清理","高级工具","设置中心"};
     private static int[] ids = {
@@ -53,17 +53,22 @@ public class MainActivity extends AppCompatActivity {
         gv_home_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
                 switch (position) {
                     case 0://进入防盗追踪
                         showLostFindDialog();
                         break;
+                    case 2://进入应用管理
+                        intent = new Intent(MainActivity.this, AppManagerActivity.class);
+                        startActivity(intent);
+                        break;
                     case 7://进入高级工具
-                        Intent intent7 = new Intent(MainActivity.this,AtoolsActivity.class);
-                        startActivity(intent7);
+                        intent = new Intent(MainActivity.this,AtoolsActivity.class);
+                        startActivity(intent);
                         break;
                     case 8://进入设置中心
-                        Intent intent8 = new Intent(MainActivity.this,SettingActivity.class);
-                        startActivity(intent8);
+                        intent = new Intent(MainActivity.this,SettingActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         break;
