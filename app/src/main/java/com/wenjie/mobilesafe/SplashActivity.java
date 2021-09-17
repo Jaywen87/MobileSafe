@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -68,6 +69,9 @@ public class SplashActivity extends AppCompatActivity {
 
         // 拷贝数据
         copyDB();
+
+        //安装桌面快捷图标
+        installShortCut();
         if(sp.getBoolean("update",false))
         {
             checkUpdate();
@@ -120,6 +124,27 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
+    }
+
+    /**
+     * 创建快捷图标
+     */
+    private void installShortCut() {
+        //快捷方式 要包含3个重要的信息1.名称，2.图标 3.干什么事
+
+        //桌面点击图标对应的意图
+        Intent shortIntent = new Intent();
+        shortIntent.setAction("android.intent.action.MAIN");//android.intent.action.MAIN
+        shortIntent.addCategory("android.intent.category.LAUNCHER");//android.intent.category.LAUNCHER
+        shortIntent.setClassName(getPackageName(),"com.wenjie.mobilesafe.SplashActivity");
+
+        //发送广播意图
+        Intent intent = new Intent();
+        intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "手机卫士");
+        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,Intent.ShortcutIconResource.fromContext(this,R.mipmap.ic_launcher) );
+        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT,shortIntent);
+        sendBroadcast(intent);
     }
 
     /**
