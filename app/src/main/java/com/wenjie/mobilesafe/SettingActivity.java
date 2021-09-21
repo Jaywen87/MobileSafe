@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.wenjie.mobilesafe.service.AddressService;
+import com.wenjie.mobilesafe.service.WatchDogService;
 import com.wenjie.mobilesafe.ui.SettingClickView;
 import com.wenjie.mobilesafe.ui.SettingItemView;
 import com.wenjie.mobilesafe.utils.PermissionGoup;
@@ -38,6 +39,11 @@ public class SettingActivity extends AppCompatActivity implements EasyPermission
 
     //设置号码归属地背景
     private SettingClickView scv_bg;
+
+    //设置应用锁
+    private SettingItemView siv_watch_dog;
+    private Intent watchDogIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +171,30 @@ public class SettingActivity extends AppCompatActivity implements EasyPermission
                 });
                 builder.setNegativeButton("取消",null);
                 builder.show();
+
+            }
+        });
+
+
+        //设置是否开启应用锁
+        siv_watch_dog = (SettingItemView)findViewById(R.id.siv_watch_dog);
+        boolean isWatchDogRunning = ServiceUtils.isServiceRunning(this,"com.wenjie.mobilesafe.service.WatchDogService");
+        if(isWatchDogRunning) {
+            siv_watch_dog.setChecked(true);
+        } else {
+            siv_watch_dog.setChecked(false);
+        }
+        watchDogIntent = new Intent(this, WatchDogService.class);
+        siv_watch_dog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(siv_watch_dog.isChecked()) {
+                    siv_watch_dog.setChecked(false);
+                    stopService(watchDogIntent);
+                } else {
+                    siv_watch_dog.setChecked(true);
+                    startService(watchDogIntent);
+                }
 
             }
         });

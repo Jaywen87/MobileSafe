@@ -36,4 +36,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/scv_changeBg"/>
 
+    <com.wenjie.mobilesafe.ui.SettingItemView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/siv_watch_dog"
+        wenjie:title="应用锁"
+        wenjie:disc_on="应用锁已开启"
+        wenjie:disc_off="应用锁已关闭" />
+
 </LinearLayout>

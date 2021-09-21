@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, AppManagerActivity.class);
                         startActivity(intent);
                         break;
+                    case 3://进入进程管理
+                        intent = new Intent(MainActivity.this, TaskManagerActivity.class);
+                        startActivity(intent);
+                        break;
                     case 7://进入高级工具
                         intent = new Intent(MainActivity.this,AtoolsActivity.class);
                         startActivity(intent);

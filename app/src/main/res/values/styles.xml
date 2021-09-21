@@ -52,4 +52,9 @@
         <item name="android:onClick">pre</item>
         <item name="android:background">@drawable/button_select</item>
     </style>
+
+    <style name="widget_text">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
 </resources>

@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wenjie.mobilesafe.db.dao.ApplockDao;
 import com.wenjie.mobilesafe.domain.AppInfo;
 import com.wenjie.mobilesafe.engine.AppInfoProvider;
 
@@ -74,6 +75,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private TextView tv_avail_sd;
     //android.os.FileObserver
     //FileObserver
+    private ApplockDao dao;
 
 
     @Override
@@ -81,6 +83,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_manager);
 
+        dao = new ApplockDao(this);
         //显示内外部可用空间大小
         tv_avail_rom = findViewById(R.id.tv_avail_rom);
         tv_avail_sd = findViewById(R.id.tv_avail_sd);
@@ -161,6 +164,32 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+        lv_app_manager.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0) {
+                    return true;
+                } else if (position == userAppInfos.size() + 1) {
+                    return true;
+                } else if (position <= userAppInfos.size()) {
+                    int newPosition = position - 1;
+                    appInfo = userAppInfos.get(newPosition);
+                } else {
+                    int newPosition = position - 1 - userAppInfos.size() -1;
+                    appInfo = sysAppInfos.get(newPosition);
+                }
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
+                if (dao.find(appInfo.getPacakagename())) {
+                    viewHolder.iv_status.setImageResource(R.drawable.unlock);
+                    dao.delete(appInfo.getPacakagename());
+                } else {
+                    viewHolder.iv_status.setImageResource(R.drawable.lock);
+                    dao.add(appInfo.getPacakagename());
+                }
+                return true;
+            }
+        });
+
     }
 
     /**
@@ -170,7 +199,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         //打开app管理界面和卸载应用程序之后需重新获取剩余存储空间
         long romsize = getAvailSpace(Environment.getDataDirectory().getAbsolutePath());
         long sdsize = getAvailSpace(Environment.getExternalStorageDirectory().getAbsolutePath());
-        tv_avail_rom.setText("内存可用空间：" + Formatter.formatFileSize(AppManagerActivity.this, romsize));
+        tv_avail_rom.setText("手机可用空间：" + Formatter.formatFileSize(AppManagerActivity.this, romsize));
         tv_avail_sd.setText("外部存储可用空间："+ Formatter.formatFileSize(AppManagerActivity.this, sdsize));
 
         new Thread(new Runnable() {
@@ -326,11 +355,17 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
                 viewHolder.iv_app_icon = view.findViewById(R.id.iv_app_icon);
                 viewHolder.tv_app_name = view.findViewById(R.id.tv_app_name);
                 viewHolder.tv_app_location = view.findViewById(R.id.tv_app_location);
+                viewHolder.iv_status = view.findViewById(R.id.iv_status);
                 view.setTag(viewHolder);
             }
             viewHolder.iv_app_icon.setImageDrawable(appInfo.getIcon());
             viewHolder.tv_app_name.setText(appInfo.getName());
             viewHolder.tv_app_location.setText(appInfo.isInRom()?"手里内存":"外部存储");
+            if (dao.find(appInfo.getPacakagename())) {
+                viewHolder.iv_status.setImageResource(R.drawable.lock);
+            } else {
+                viewHolder.iv_status.setImageResource(R.drawable.unlock);
+            }
             return view;
         }
 
@@ -341,6 +376,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         ImageView iv_app_icon;
         TextView tv_app_name;
         TextView tv_app_location;
+        ImageView iv_status;
     }
 
     private long getAvailSpace(String path){

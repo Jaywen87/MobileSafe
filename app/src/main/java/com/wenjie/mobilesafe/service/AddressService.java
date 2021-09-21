@@ -77,7 +77,7 @@ public class AddressService extends Service {
         TextView tv_address = (TextView) view.findViewById(R.id.tv_address);
         tv_address.setText(address);
 
-        //设置背景图片
+        //设置背景图片 半透明 活力橙 卫士兰 金属灰 苹果绿
         int ids[] = {R.drawable.call_locate_white,R.drawable.call_locate_orange,R.drawable.call_locate_blue,R.drawable.call_locate_gray,R.drawable.call_locate_green};
         SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
         int which = sp.getInt("which", 0);
