@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class AddressService extends Service {
     private View view;
     private WindowManager.LayoutParams params;
     private SharedPreferences sp;
+    private long [] mHits= new long [2];
 
     public AddressService() {
     }
@@ -133,7 +135,23 @@ public class AddressService extends Service {
                         break;
 
                 }
-                return true;
+                return false;
+            }
+        });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.arraycopy(mHits, 1,mHits,0,mHits.length-1);
+                mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                if (mHits[0] >= SystemClock.uptimeMillis() - 500) {
+                    params.x = wm.getDefaultDisplay().getWidth() /2 - view.getWidth()/2;
+                    wm.updateViewLayout(view,params);
+
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putInt("lastX", params.x);
+                    edit.putInt("lastY", params.y);
+                    edit.commit();
+                }
             }
         });
 
