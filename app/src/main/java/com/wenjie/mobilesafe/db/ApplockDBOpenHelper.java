@@ -6,13 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-public class ApplockDBOpenHelp extends SQLiteOpenHelper {
+public class ApplockDBOpenHelper extends SQLiteOpenHelper {
 
     /**
      * 数据库的构造方法，创建一个名叫applock.db的数据库
      * @param context
      */
-    public ApplockDBOpenHelp(@Nullable Context context) {
+    public ApplockDBOpenHelper(@Nullable Context context) {
         super(context, "applock.db", null, 1);
     }
 

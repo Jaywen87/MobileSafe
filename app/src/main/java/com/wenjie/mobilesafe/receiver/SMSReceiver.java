@@ -21,10 +21,9 @@ public class SMSReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         SharedPreferences sp = context.getSharedPreferences("config",Context.MODE_PRIVATE);
-        Object[] objs = (Object[]) Objects.requireNonNull(intent.getExtras()).get("pdus");
-        String foramt = intent.getStringExtra("foramt");
-        for(Object b : Objects.requireNonNull(objs)) {
-            SmsMessage sms = SmsMessage.createFromPdu((byte[]) b, foramt);
+        Object[] objs = (Object[]) intent.getExtras().get("pdus");
+        for(Object b : objs) {
+            SmsMessage sms = SmsMessage.createFromPdu((byte[]) b);
             String sender = sms.getOriginatingAddress();
             String messageBody = sms.getMessageBody();
 

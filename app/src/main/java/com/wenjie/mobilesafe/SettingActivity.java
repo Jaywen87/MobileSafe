@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.wenjie.mobilesafe.service.AddressService;
+import com.wenjie.mobilesafe.service.CallSmsSafeService;
 import com.wenjie.mobilesafe.service.WatchDogService;
 import com.wenjie.mobilesafe.ui.SettingClickView;
 import com.wenjie.mobilesafe.ui.SettingItemView;
@@ -39,6 +40,10 @@ public class SettingActivity extends AppCompatActivity implements EasyPermission
 
     //设置号码归属地背景
     private SettingClickView scv_bg;
+
+    //设置黑名单
+    private SettingItemView siv_callsms_safe;
+    private Intent callSmsmSafeIntent;
 
     //设置应用锁
     private SettingItemView siv_watch_dog;
@@ -175,6 +180,29 @@ public class SettingActivity extends AppCompatActivity implements EasyPermission
             }
         });
 
+        //设置黑名单
+        siv_callsms_safe = (SettingItemView)findViewById(R.id.siv_callsms_safe);
+        boolean isCallSmsRunning = ServiceUtils.isServiceRunning(this,"com.wenjie.mobilesafe.service.CallSmsSafeService");
+        if(isCallSmsRunning) {
+            siv_callsms_safe.setChecked(true);
+        } else {
+            siv_callsms_safe.setChecked(false);
+        }
+        callSmsmSafeIntent = new Intent(this, CallSmsSafeService.class);
+        siv_callsms_safe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(siv_callsms_safe.isChecked()) {
+                    siv_callsms_safe.setChecked(false);
+                    stopService(callSmsmSafeIntent);
+                } else {
+                    siv_callsms_safe.setChecked(true);
+                    startService(callSmsmSafeIntent);
+                }
+
+            }
+        });
+
 
         //设置是否开启应用锁
         siv_watch_dog = (SettingItemView)findViewById(R.id.siv_watch_dog);
@@ -198,6 +226,35 @@ public class SettingActivity extends AppCompatActivity implements EasyPermission
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //设置是否开启来电显示
+        boolean isRunning = ServiceUtils.isServiceRunning(this,"com.wenjie.mobilesafe.service.AddressService");
+        if(isRunning) {
+            siv_show_address.setChecked(true);
+        } else {
+            siv_show_address.setChecked(false);
+        }
+
+        //设置黑名单
+        boolean isCallSmsRunning = ServiceUtils.isServiceRunning(this,"com.wenjie.mobilesafe.service.CallSmsSafeService");
+        if(isCallSmsRunning) {
+            siv_callsms_safe.setChecked(true);
+        } else {
+            siv_callsms_safe.setChecked(false);
+        }
+
+        //设置是否开启应用锁
+        boolean isWatchDogRunning = ServiceUtils.isServiceRunning(this,"com.wenjie.mobilesafe.service.WatchDogService");
+        if(isWatchDogRunning) {
+            siv_watch_dog.setChecked(true);
+        } else {
+            siv_watch_dog.setChecked(false);
+        }
     }
 
     @Override

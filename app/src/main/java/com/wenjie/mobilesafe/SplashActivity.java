@@ -71,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
         copyDB();
 
         //安装桌面快捷图标
-        installShortCut();
+        //installShortCut();
         if(sp.getBoolean("update",false))
         {
             checkUpdate();

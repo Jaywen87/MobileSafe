@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
                     case 0://进入防盗追踪
                         showLostFindDialog();
                         break;
+                    case 1://进入通讯卫士 黑名单拦截界面
+                        intent = new Intent(MainActivity.this, CallSmsSafeActivity.class);
+                        startActivity(intent);
+                        break;
                     case 2://进入应用管理
                         intent = new Intent(MainActivity.this, AppManagerActivity.class);
                         startActivity(intent);

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.wenjie.mobilesafe.db.ApplockDBOpenHelp;
+import com.wenjie.mobilesafe.db.ApplockDBOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * 程序锁dao
  */
 public class ApplockDao {
-    private ApplockDBOpenHelp helper;
+    private ApplockDBOpenHelper helper;
     private Context context;
 
 
@@ -24,7 +24,7 @@ public class ApplockDao {
      * @param context
      */
     public ApplockDao(Context context) {
-         helper = new ApplockDBOpenHelp(context);
+         helper = new ApplockDBOpenHelper(context);
          this.context = context;
     }
 
