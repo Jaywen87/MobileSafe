@@ -83,7 +83,7 @@ public class SmsUtils {
         callBack.beforeBackup(max);
         serializer.attribute(null, "max", max+"");
         while (cursor.moveToNext()) {
-            Thread.sleep(500);
+            //Thread.sleep(500); //测试用
             String body = cursor.getString(0);
             String address = cursor.getString(1);
             String type = cursor.getString(2);
@@ -153,7 +153,7 @@ public class SmsUtils {
                         callBack.onSmsRestore(progress);
                         values.clear();
                         Log.i(TAG, "restoreSms: " +  progress + "短信内容：" + values.toString());
-                        Thread.sleep(500);
+                        //Thread.sleep(500); //测试用
                     }
                     break;
             }

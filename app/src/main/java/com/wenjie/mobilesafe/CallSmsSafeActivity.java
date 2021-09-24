@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,10 @@ public class CallSmsSafeActivity extends AppCompatActivity {
     private EditText et_black_number;
     private CheckBox cb_phone;
     private CheckBox cb_sms;
+    private LinearLayout ll_loading;
+    private int offset = 0;
+    private int maxNumber = 20;
+    private boolean isPaginationShow = false;
 
 
     @Override
@@ -43,16 +50,68 @@ public class CallSmsSafeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_sms_safe);
         lv_callsms_safe = findViewById(R.id.lv_callsms_safe);
-        dao = new BlackNumberDao(this);
-//        Random random = new Random();
-//        long basenumber = 13723744132L;
-//        for (int i = 0; i < 300; i++) {
-//            Log.i(TAG, "onCreate:fd " + String.valueOf(basenumber + i)+ ","+String.valueOf(random.nextInt(3)+1));
-//            dao.add(String.valueOf(basenumber + i),String.valueOf(random.nextInt(3)+1));
-//        }
-        infos = dao.findAll();
-        mAdapter = new BlackNumberAdapter();
-        lv_callsms_safe.setAdapter(mAdapter);
+        ll_loading = findViewById(R.id.ll_loading);
+        dao = new BlackNumberDao(this);;
+        fillData();
+        //listview注册一个滚动事件的监听器
+        lv_callsms_safe.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE://空闲状态
+                        //判断当前位置listview滚动位置
+                        //获取当前最后一个可见条目的位置
+                        int lastposition = lv_callsms_safe.getLastVisiblePosition();
+                        if (lastposition == infos.size() -1 ) {
+                            offset += maxNumber;
+                            fillData();
+                        }
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL://触摸滚动状态
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING://惯性滑行状态
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+
+
+    }
+
+    private void fillData() {
+        //ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //ll_loading.setLayoutParams(layoutParams);
+        ll_loading.setVisibility(View.VISIBLE);
+
+        new Thread(){
+            @Override
+            public void run() {
+                if ((infos == null) || isPaginationShow) {
+                    infos = dao.findPart(offset,maxNumber);
+                } else {
+                    infos.addAll(dao.findPart(offset,maxNumber));
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ll_loading.setVisibility(View.INVISIBLE);
+                        if (mAdapter == null) {
+                            mAdapter = new BlackNumberAdapter();
+                            lv_callsms_safe.setAdapter(mAdapter);
+                        } else {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+            }
+        }.start();
     }
 
     public void addBlackNumber(View view) {

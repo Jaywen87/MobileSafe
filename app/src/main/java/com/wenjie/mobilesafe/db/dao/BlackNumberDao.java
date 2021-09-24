@@ -60,9 +60,40 @@ public class BlackNumberDao {
     }
 
     public List<BlackNumberInfo> findAll() {
+//        try {
+//            Thread.sleep(3000); //测试用
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         List<BlackNumberInfo> result = new ArrayList<>();
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select number,mode from blacknumber", null);
+        while (cursor.moveToNext()) {
+            BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
+            blackNumberInfo.setNumber((cursor.getString(0)));
+            blackNumberInfo.setMode(cursor.getString(1));
+            result.add(blackNumberInfo);
+        }
+        cursor.close();
+        db.close();
+        return  result;
+    }
+
+    /**
+     * 查找部分黑名单
+     * @param offset 从那个位置开始获取数据
+     * @param maxnuber 一次最多获取多少条
+     * @return
+     */
+    public List<BlackNumberInfo> findPart(int offset, int maxnuber) {
+//        try {
+//            //Thread.sleep(1); //测试用
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        List<BlackNumberInfo> result = new ArrayList<>();
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select number,mode from blacknumber order by _id desc limit? offset?", new String[]{String.valueOf(maxnuber),String.valueOf(offset)});
         while (cursor.moveToNext()) {
             BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
             blackNumberInfo.setNumber((cursor.getString(0)));

@@ -11,6 +11,8 @@ import com.wenjie.mobilesafe.db.dao.BlackNumberDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -31,7 +33,14 @@ public class ExampleInstrumentedTest {
     public void addTest() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         BlackNumberDao dao = new BlackNumberDao(appContext);
-        dao.add("13723744131","1");
-        dao.add("18937688491", "2");
+        //dao.add("13723744131","1");
+        //dao.add("18937688491", "2");
+
+        Random random = new Random();
+        long basenumber = 13723744132L;
+        for (int i = 0; i < 300; i++) {
+           // Log.i(TAG, "onCreate:fd " + String.valueOf(basenumber + i)+ ","+String.valueOf(random.nextInt(3)+1));
+            dao.add(String.valueOf(basenumber + i),String.valueOf(random.nextInt(3)+1));
+        }
     }
 }
